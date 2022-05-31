@@ -6,13 +6,25 @@ namespace gerenciadorPagamentos.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly PagamentoContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(PagamentoContext context)
         {
-            _logger = logger;
+            _context = context;
         }
+        public IActionResult Editar(int id)
+        {
+            Pagamento pagamento = new Pagamento();
+            pagamento = _context.Pagamento.FirstOrDefault(a => a.Id == id);
 
+            if (pagamento.Id == 0)
+            {
+                return View("PagamentoNaoEncontrado");
+            }
+
+            return View("Cadastrar", pagamento);
+        }
+        
         public IActionResult Index()
         {
             return View();
@@ -25,12 +37,32 @@ namespace gerenciadorPagamentos.Controllers
 
         public IActionResult Listar()
         {
-            return View();
+            return View("Listar", _context.Pagamento.ToList());
         }
 
-        public IActionResult Privacy()
+        public IActionResult Salvar(Pagamento pagamento)
         {
-            return View();
+            Pagamento pgmnt = new Pagamento();
+            pgmnt = _context.Pagamento.FirstOrDefault(a => a.Id == pagamento.Id);
+            if (pgmnt == null)
+            {
+                _context.Pagamento.Add(pagamento);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Entry(pgmnt).CurrentValues.SetValues(pgmnt);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Listar");
+        }
+        public IActionResult Excluir(Pagamento pagamento)
+        {
+            
+            _context.Pagamento.Remove(pagamento);
+            _context.SaveChanges();
+
+            return RedirectToAction("Listar");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
