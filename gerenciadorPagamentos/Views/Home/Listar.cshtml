@@ -37,7 +37,7 @@
            <p>Pagamento atualizado com sucesso!</p>
         }
     }
-    <a href="/Home/Formulario" class="btn btn-primary">Novo Aluno</a>
+    <a href="Cadastrar" class="btn btn-primary" style="margin-bottom: 10px; margin-left: 10px;">Novo Pagamento</a>
     <table class="table">
         <tr>
             <th>ID</th>
@@ -57,28 +57,47 @@
                 <td>@pagamento.data_vencimento.ToString().Substring(0, 10)</td>
                 <td>@pagamento.valor</td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@pagamento.Id" class="btn btn-secondary">Editar</a>
-                    <a class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Excluir</a>
+                    <a asp-action="Editar" asp-route-id="@pagamento.Id" class="btn btn-secondary" style="margin: 5px">Editar</a>
+                    <a asp-action="Excluir" asp-route-id="@pagamento.Id" class="btn btn-danger" style="margin: 5px">Excluir</a>
                 </td>
            </tr>
         }
     </table>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+    @*<div id="myModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Excluir Pagamento</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Você deseja excluir este pagamento?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-            <button type="button" class="btn btn-primary">Sim</button>
-          </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir Pagamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Você deseja mesmo excluir este pagamento?
+            </div>
+            <div class="modal-footer">
+                <form method="post">
+                    <button id="modalDeleteButton" type="submit" class="btn btn-danger"
+                            asp-controller="Home"
+                            
+                            asp-action="Excluir">
+                        Sim
+                    </button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+            </div>
         </div>
-      </div>
     </div>
+    <script type="text/javascript">
+        var clickId;
+        $("#myModal").on('show.bs.modal', function (event) {
+            $(event.currentTarget).find('asp-route-id').val(getId);
+            var btn = $(this).find('#modalDeleteButton');
+            console.log(clickId)
+            btn.attr('formaction', 'Excluir/'+clickId);
+        });
+
+        function getId(clicked_id) {
+            this.clickId = clicked_id;
+         }
+    </script>*@

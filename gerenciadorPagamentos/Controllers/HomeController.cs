@@ -44,6 +44,16 @@ namespace gerenciadorPagamentos.Controllers
         {
             Pagamento pgmnt = new Pagamento();
             pgmnt = _context.Pagamento.FirstOrDefault(a => a.Id == pagamento.Id);
+            Pagamento verificaCodBarras = _context.Pagamento.FirstOrDefault(a => a.codigo_barras == pagamento.codigo_barras);
+            Pagamento verificaDescricao = _context.Pagamento.FirstOrDefault(a => a.descricao == pagamento.descricao);
+            if(verificaDescricao != null)
+            {
+                return Content("ERRO");
+            }
+            if (verificaCodBarras != null)
+            {
+                return View("CodigoExistente");
+            }
             if (pgmnt == null)
             {
                 _context.Pagamento.Add(pagamento);
@@ -54,11 +64,13 @@ namespace gerenciadorPagamentos.Controllers
                 _context.Entry(pgmnt).CurrentValues.SetValues(pgmnt);
                 _context.SaveChanges();
             }
+
             return RedirectToAction("Listar");
         }
-        public IActionResult Excluir(Pagamento pagamento)
+        public IActionResult Excluir(int id)
         {
-            
+            Pagamento pagamento = _context.Pagamento.FirstOrDefault(a => a.Id == id);
+
             _context.Pagamento.Remove(pagamento);
             _context.SaveChanges();
 

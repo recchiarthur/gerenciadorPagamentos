@@ -5,7 +5,7 @@ namespace gerenciadorPagamentos.Models
     public class Pagamento
     {
         public int Id { get; set; }
-        [Column(TypeName = "ntext")]
+
         public string descricao { get; set; }
 
         public decimal valor { get; set; }
